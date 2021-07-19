@@ -72,12 +72,14 @@ const ChannelBox = ({ content }) => {
       if (channels.length > 0) {
         return channels.map((channel) => {
           const recipient = channel.users.find((e) => e.email !== sender.email);
+          console.log(recipient);
           return (
             <React.Fragment key={channel.channelID}>
               <div
                 className={`channel ${handleActiveChannel(channel)}`}
                 onClick={(e) => clickedChannel(e, channel)}
               >
+                
                 <CircleProfileImage data={{ user: recipient, size: 48 }} />
                 <div className="desc-area">
                   <div className="username">{recipient.username}</div>

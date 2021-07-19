@@ -38,7 +38,7 @@ const CircleProfileImage = ({ data }) => {
       className="profile-image"
       style={{ width: `${size}px`, height: `${size}px` }}
     >
-      <Link to={`/profile/${user.userID.slice(0, 5)}`}>
+      <Link to={`/profile/${user.userID ? user.userID.slice(0, 5) : user.id.slice(0, 5)}`}>
         <img src={imageProfile} alt="icon-profile" />
       </Link>
     </div>
