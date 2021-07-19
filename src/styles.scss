@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css?family=Numans");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  // height: 100%;
+  font-family: "Numans", sans-serif;
+}
+
+.container {
+  align-content: center;
+  max-width: 100%;
+  padding: 0;
+
+  button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    color: #555;
+    &:hover {
+      background-color: #eee;
+    }
+    &:active {
+      background-color: #ddd;
+    }
+  }
+
+  .input {
+    width: 100%;
+    border-radius: 24px;
+    padding: 8px 24px;
+    outline: none;
+    border: none;
+    height: 50px;
+    background-color: #dde5ec;
+  }
+}
+
+.react-responsive-modal-modal {
+  min-width: 500px;
+  border-radius: 16px;
+  .text {
+    text-align: center;
+    font-size: 20px;
+  }
+  .button-area {
+    margin: 1em auto 0;
+    text-align: center;
+    button {
+      margin-right: 8px;
+      padding: 8px 16px;
+      min-width: 100px;
+      border-radius: 24px;
+      border: none;
+      outline: none;
+      &.cancel {
+        color: #555;
+        &:hover {
+          background-color: #ddd;
+        }
+        &:active {
+          background-color: #ccc;
+        }
+      }
+      &.confirm {
+        background-color: crimson;
+        color: #fff;
+        &:hover {
+          background-color: darkred;
+        }
+        &:active {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+      .spinner-border {
+        width: 1em;
+        height: 1em;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+      }
+    }
+  }
+  .react-responsive-modal-closeButton {
+    display: none;
+  }
+}

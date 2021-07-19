@@ -1,0 +1,11 @@
+.common-container {
+  padding: 5% 0%;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 1440px) {
+  .common-container {
+    padding: 5%;
+  }
+}

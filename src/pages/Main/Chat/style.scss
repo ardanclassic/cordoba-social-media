@@ -1,0 +1,17 @@
+.info {
+  width: max-content;
+  margin: 5% auto 1em auto;
+  color: #555;
+  .username {
+    font-weight: 600;
+  }
+}
+.main-box {
+  display: flex;
+  min-width: 700px;
+  max-width: 1024px;
+  height: 70vh;
+  margin: 5% auto 0;
+  box-shadow: 0 0 10px 1px #ddd;
+  border-radius: 16px 16px 40px 40px;
+}

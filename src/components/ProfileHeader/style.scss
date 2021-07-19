@@ -1,0 +1,107 @@
+.profile-header {
+  display: flex;
+  justify-content: center;
+  
+  .image-area {
+    width: 250px;
+    height: 250px;
+    margin-right: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .description-area {
+    .user-occupation {
+      font-size: 18px;
+    }
+    .socialism {
+      display: flex;
+      margin: 24px auto;
+      .amount {
+        text-align: center;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        letter-spacing: 2px;
+        background-color: white;
+        box-shadow: 0 4px 24px -4px #bbb;
+        font-weight: bold;
+      }
+      .title {
+        text-align: center;
+        font-size: 18px;
+        letter-spacing: 2px;
+        color: #777;
+      }
+      .user-follower {
+        margin-right: 24px;
+        .amount {
+          // background-color: #94e0bd;
+        }
+      }
+      .user-following {
+        margin-right: 24px;
+        .amount {
+          // background-color: #e0bfff;
+        }
+      }
+    }
+    .button {
+      padding: 8px 24px;
+      border-radius: 8px;
+      letter-spacing: 2px;
+      border: none;
+
+      &.btn-send {
+        min-width: 150px;
+        margin-right: 1em;
+        color: #555;
+        font-weight: bold;
+        box-shadow: 0 0 24px -4px #bbb;
+        border-radius: 24px;
+        transition: .1s ease-in all;
+        &.btn-follow {
+          background-color: crimson;
+          color: #fff;
+          &:hover {
+            background-color: darkred;
+          }
+        }
+        &.btn-unfollow {
+          background-color: #fff;
+          &:hover {
+            background-color: #ddd;
+          }
+        }
+      }
+
+      &.btn-message {
+        background-color: #fff;
+        color: #555;
+        box-shadow: 0 0 24px -4px #aaa;
+        border-radius: 24px;
+        font-size: 20px;
+        transition: .1s ease-in all;
+        &:hover {
+          background-color: #ddd;
+        }
+      }
+      &.update-profile {
+        width: 200px;
+        border-radius: 24px;
+        color: #000;
+        box-shadow: 0 0 24px -4px #bbb;
+        background-color: #fff;
+        &:hover {
+          background-color: crimson;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+.auth-container {
+  padding: 0 3%;
+  min-height: 100vh;
+}
+
+.card {
+  padding: 2em 1em;
+  width: 400px;
+  border: none !important;
+  box-shadow: 0 0 10px 0px #ddd;
+  position: absolute !important;
+  top: 50%;
+  left: 60%;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  transform: translate(-50%, -60%);
+  border-radius: 24px !important;
+
+  .card-header, .card-footer {
+    background-color: unset;
+    border: none;
+  }
+  .card-header {
+    padding: 0 1em;
+    h3 {
+      margin: 0;
+    }
+  }
+
+  form {
+    input {
+      margin: 8px auto;
+      &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+      
+    }
+    .form-password {
+      position: relative;
+      i {
+        position: absolute;
+        right: 1em;
+        top: 50%;
+        transform: translateY(-50%);
+        color: crimson;
+        cursor: pointer;
+        z-index: 5;
+      }
+    }
+
+    .btn-area {
+      display: grid;
+      margin-top: 8px;
+      button {
+        box-shadow: none;
+        border-radius: 24px;
+      }
+
+      .divider {
+        position: relative;
+        margin: 24px auto;
+        width: 80%;
+        height: 1px;
+        background-color: #ccc;
+        span {
+          position: absolute;
+          color: #bbb;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          background: #fff;
+          padding: 0 8px;
+          border-radius: 8px;
+        }
+      }
+      .btn-submit {
+        background-color: crimson;
+        color: #fff;
+        &:hover {
+          background-color: darkred;
+        }
+        &:active {
+          background-color: white;
+          color: darkred;
+          border: 1px solid darkred;
+        }
+      }
+      .btn-google {
+        position: relative;
+        background-color: #fff;
+        color: darkorange;
+        box-shadow: 0 0 24px -4px #bbb;
+        &:hover {
+          box-shadow: 0 0 24px -4px #ddd;
+        }
+        i {
+          position: absolute;
+          left: 1em;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+
+  .card-footer {
+    .links {
+      a {
+        margin-left: 4px;
+        text-decoration: none;
+        color: #1e90ff;
+        font-weight: bold;
+      }
+    }
+    
+  }
+}

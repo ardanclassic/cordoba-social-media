@@ -1,0 +1,41 @@
+.reaction-area {
+  margin: 1em auto 0;
+  border-top: 1px solid #ddd;
+  .button-area {
+    margin: 8px auto;
+    button {
+      margin-right: 8px;
+      border-radius: 24px;
+      font-size: 13px;
+      background-color: unset;
+      i {
+        margin-right: 8px;
+      }
+      &.unlike {
+        i {
+          color: crimson;
+        }
+      }
+    }
+  }
+  .total-likes {
+    font-size: 14px;
+    color: #555;
+    padding: 0 1em;
+    margin-bottom: 1em;
+  }
+  .comment-area {
+    overflow: hidden;
+    transition: 0.3s ease-in all;
+    .loading-spinner {
+      margin: 1em auto;
+      text-align: center;
+      .spinner-border {
+        width: 3em;
+        height: 3em;
+        border: 0.25em solid #ddd;
+        border-right-color: #fff;
+      }
+    }
+  }
+}

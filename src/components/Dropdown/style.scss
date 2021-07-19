@@ -1,0 +1,19 @@
+.dropdown-menu {
+  padding: 8px !important;
+  width: max-content;
+  border: none;
+  box-shadow: 0 0 16px 0px #ddd;
+  .dropitem {
+    cursor: pointer;
+    padding: 8px;
+    background-color: unset;
+    text-align: left;
+    font-size: 14px;
+    &:hover {
+      background-color: #eee;
+    }
+    i {
+      width: 24px;
+    }
+  }
+}

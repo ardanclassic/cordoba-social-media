@@ -1,0 +1,25 @@
+.card {
+  .forgot-password {
+    text-align: center;
+    margin-top: 8px;
+    a {
+      text-decoration: none;
+      color: darkorange;
+    }
+  }
+  
+  .signup:hover {
+    color: #1e90ff;
+  }
+  .forgot-password a {
+    color: crimson;
+  }
+}
+
+.login-image {
+  position: absolute;
+  top: 55%;
+  right: 60%;
+  transform: scaleX(-1) translate(-50%, -50%);
+  width: 550px;
+}

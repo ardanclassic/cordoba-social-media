@@ -1,0 +1,18 @@
+.card {
+  .btn-forgot {
+    background-color: crimson;
+    color: #fff;
+    &:hover, &:active {
+      background-color: crimson;
+      color: #fff;
+    }
+  }
+}
+
+.forgot-image {
+  position: absolute;
+  top: 55%;
+  left: 40%;
+  transform: translate(-60%, -60%);
+  width: 550px;
+}

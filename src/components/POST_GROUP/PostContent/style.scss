@@ -1,0 +1,25 @@
+.post-content {
+  .text {
+    margin-top: 1em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: break-spaces;
+  }
+  .show-more {
+    color: deepskyblue;
+    cursor: pointer;
+    width: fit-content;
+  }
+  .image-area {
+    padding-top: 1em;
+    margin-top: 1em;
+    text-align: center;
+    cursor: pointer;
+    // box-shadow: 0 -8px 48px -12px #ddd;
+    img {
+      width: 50%;
+      margin: 1em auto;
+    }
+  }
+}
