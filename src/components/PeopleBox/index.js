@@ -53,8 +53,8 @@ const PeopleBox = () => {
                     )}
                   </div>
                   <div className="username">
-                    {person.userData.name
-                      ? person.userData.name
+                    {person.userData.username
+                      ? person.userData.username
                       : SetNameFromEmail(person.email)}
                   </div>
                 </Link>

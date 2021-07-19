@@ -50,6 +50,11 @@ const Navbar = ({ show, setShow }) => {
           <img className="icon-brand" src={Cordoba} alt="logo-icon" />
         </Link>
         <div className="navbar-items">
+          <Link to="/chat" className="icons">
+            <div className="chat-logo">
+              <i className="fas fa-comments"></i>
+            </div>
+          </Link>
           <Link to="/profile" className="icons">
             {userProfile && (
               <div className="profile-wrapper">

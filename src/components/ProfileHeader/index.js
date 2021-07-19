@@ -88,12 +88,20 @@ const ProfileHeader = ({ content }) => {
             </Link>
           </>
         ) : (
-          <button
-            className="button update-profile"
-            onClick={() => setOpenmodal(true)}
-          >
-            Update Profile
-          </button>
+          <>
+            <button
+              className="button update-profile"
+              onClick={() => setOpenmodal(true)}
+            >
+              Update Profile
+            </button>
+            <Link
+              to={`/chat`}
+              className="button btn-message"
+            >
+              <i className="far fa-paper-plane"></i>
+            </Link>
+          </>
         )}
       </div>
 
