@@ -9,7 +9,7 @@ import "./style.scss";
 
 const ShowComment = ({ data }) => {
   const { showComment, post, user, currentUser } = data;
-  const { getComments, deleteComment, getThisUser } = useUserContext();
+  const { getComments, deleteComment, people } = useUserContext();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openmodal, setOpenmodal] = useState(false);
@@ -93,6 +93,20 @@ const ShowComment = ({ data }) => {
     return null;
   };
 
+  const getUsername = (email) => {
+    if (people) {
+      const findUser = people.find((e) => e.email === email);
+      return (
+        <div className="username">
+          {findUser.userData.username
+            ? findUser.userData.username
+            : SetNameFromEmail(findUser.email)}
+        </div>
+      );
+    }
+    return null;
+  };
+
   if (loading) {
     return (
       <div className="loading-spinner">
@@ -112,11 +126,7 @@ const ShowComment = ({ data }) => {
                   />
                 </div>
                 <div className="body-content">
-                  <div className="name">
-                    {comment.senderName
-                      ? comment.senderName
-                      : SetNameFromEmail(comment.sender)}
-                  </div>
+                  {getUsername(comment.sender)}
                   <TimeFormat data={comment} />
                   <div className="text">{comment.comment}</div>
                   <HandleDropdownCase comment={comment} />
