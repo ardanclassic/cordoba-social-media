@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useUserContext } from "contexts/UserContext";
 import CommentForm from "components/POST_GROUP/CommentForm";
 import ShowComment from "../ShowComment";
+import ModalPostLikes from "components/Modal/ModalPostLikes";
 import "./style.scss";
 
 const Reaction = ({ dataReaction }) => {
@@ -12,12 +13,13 @@ const Reaction = ({ dataReaction }) => {
     sendLike,
     sendUnlike,
     checkPostLike,
-    getTotalLikes,
+    getDataLikes,
   } = useUserContext();
   const [totalComments, setTotalComments] = useState(0);
   const [totalLikes, setTotalLikes] = useState(0);
   const [showComment, setShowComment] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [openLikeModal, setOpenLikeModal] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -32,7 +34,7 @@ const Reaction = ({ dataReaction }) => {
         }
       });
     });
-    getTotalLikes({ post, user }).then((collect) => {
+    getDataLikes({ post, user }).then((collect) => {
       collect.onSnapshot((snap) => {
         let totalLikes = [];
         snap.forEach((doc) => {
@@ -58,7 +60,7 @@ const Reaction = ({ dataReaction }) => {
     totalComments,
     totalLikes,
     getTotalComments,
-    getTotalLikes,
+    getDataLikes,
     post,
     user,
     checkPostLike,
@@ -126,13 +128,26 @@ const Reaction = ({ dataReaction }) => {
         </button>
       </div>
       {totalLikes > 0 && (
-        <div className="total-likes">{totalLikes} people like this post!</div>
+        <div className="total-likes" onClick={() => setOpenLikeModal(true)}>
+          {totalLikes} people like this post!
+        </div>
       )}
       {showComment && (
         <div className="comment-area">
           <CommentForm data={{ post, user }} />
           <ShowComment data={{ post, user, showComment, currentUser }} />
         </div>
+      )}
+      {openLikeModal && (
+        <ModalPostLikes
+          data={{
+            post,
+            user,
+            openLikeModal,
+            setOpenLikeModal,
+            getDataLikes,
+          }}
+        />
       )}
     </div>
   );

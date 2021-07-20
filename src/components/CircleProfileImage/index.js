@@ -8,41 +8,38 @@ import "./style.scss";
 const CircleProfileImage = ({ data }) => {
   const [imageProfile, setImageProfile] = useState();
   const { people } = useUserContext();
-  const { user, size } = data;
+  const [userInfo, setUserInfo] = useState();
+  const { email, size, style } = data;
 
   useEffect(() => {
-    if (user.userData) {
-      user.userData.gender === "male"
-        ? setImageProfile(MaleAvatar)
-        : setImageProfile(FemaleAvatar);
-
-      if (user.userData.photoProfile) {
-        setImageProfile(user.userData.photoProfile);
-      }
-    } else {
-      if (people) {
-        const findUser = people.find((e) => e.email === user.email);
-        findUser.userData.gender === "male"
+    if (people) {
+      const findUser = people.find((e) => e.email === email);
+      setUserInfo(findUser);
+      if (userInfo) {
+        userInfo.userData.gender === "male"
           ? setImageProfile(MaleAvatar)
           : setImageProfile(FemaleAvatar);
 
-        if (findUser.userData.photoProfile) {
-          setImageProfile(findUser.userData.photoProfile);
+        if (userInfo.userData.photoProfile) {
+          setImageProfile(userInfo.userData.photoProfile);
         }
       }
     }
-  }, [user, people]);
+  }, [people, userInfo, email]);
 
-  return (
-    <div
-      className="profile-image"
-      style={{ width: `${size}px`, height: `${size}px` }}
-    >
-      <Link to={`/profile/${user.userID ? user.userID.slice(0, 5) : user.id.slice(0, 5)}`}>
-        <img src={imageProfile} alt="icon-profile" />
-      </Link>
-    </div>
-  );
+  if (userInfo) {
+    return (
+      <div
+        className="profile-image"
+        style={{ width: `${size}px`, height: `${size}px` }}
+      >
+        <Link to={`/profile/${userInfo.userID.slice(0, 5)}`}>
+          <img src={imageProfile} alt="icon-profile" />
+        </Link>
+      </div>
+    );
+  }
+  return null;
 };
 
 export default CircleProfileImage;

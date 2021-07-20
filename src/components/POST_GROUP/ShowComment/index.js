@@ -3,14 +3,13 @@ import { useUserContext } from "contexts/UserContext";
 import CircleProfileImage from "components/CircleProfileImage";
 import DropdownSelect from "components/Dropdown";
 import EditComment from "components/Modal/EditComment";
-import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { SetNameFromEmail } from "utils/helpers";
 import "./style.scss";
 
 const ShowComment = ({ data }) => {
   const { showComment, post, user, currentUser } = data;
-  const { getComments, updateComments, deleteComment } = useUserContext();
+  const { getComments, deleteComment, getThisUser } = useUserContext();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openmodal, setOpenmodal] = useState(false);
@@ -77,7 +76,10 @@ const ShowComment = ({ data }) => {
                 id: "delete",
                 name: "Delete Comment",
                 icon: <i className="fas fa-trash-alt"></i>,
-                access: myPost_myComment || myPost_otherComment || otherPost_myComment,
+                access:
+                  myPost_myComment ||
+                  myPost_otherComment ||
+                  otherPost_myComment,
                 action: (data) => deleteComment(data),
               },
             ],
@@ -87,7 +89,7 @@ const ShowComment = ({ data }) => {
           }}
         />
       );
-    } 
+    }
     return null;
   };
 
@@ -102,19 +104,11 @@ const ShowComment = ({ data }) => {
       return (
         <div className="comments-box">
           {comments.map((comment) => {
-            const userData = {
-              photoProfile: comment.senderImage,
-              gender: comment.senderGender,
-            };
-
             return (
               <div key={comment.commentID} className="comment">
                 <div className="sender-pic">
                   <CircleProfileImage
-                    data={{
-                      user: { userID: comment.senderID, userData },
-                      size: 32,
-                    }}
+                    data={{ email: comment.sender, size: 32 }}
                   />
                 </div>
                 <div className="body-content">

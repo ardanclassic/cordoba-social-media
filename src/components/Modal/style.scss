@@ -1,6 +1,11 @@
 .react-responsive-modal-modal {
   max-width: 1024px !important;
   max-height: 90vh !important;
+  .image-modal {
+    img {
+      min-height: 300px;
+    }
+  }
   form {
     margin: 1em auto;
     .form-select:focus {
@@ -93,7 +98,6 @@
       background-color: #eaf1f7;
     }
   }
-
   .form-edit-post {
     max-width: 500px;
     margin-bottom: 0;
@@ -185,6 +189,34 @@
           display: inline-block;
           padding: 8px 12px;
           cursor: pointer;
+        }
+      }
+    }
+  }
+  .like-area {
+    padding: 1em;
+    max-height: 500px;
+    overflow-y: auto;
+    .person {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #555;
+      margin: 8px auto;
+      background-color: #dce4ef;
+      padding: 8px 16px;
+      border-radius: 24px;
+      &:hover {
+        background-color: #dde5ec;
+      }
+      .desc-area {
+        margin-left: 8px;
+        .username {
+          font-weight: bold;
+        }
+        .created-at {
+          font-size: 12px;
         }
       }
     }

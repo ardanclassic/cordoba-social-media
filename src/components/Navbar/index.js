@@ -6,6 +6,7 @@ import { useAuth } from "contexts/AuthContext";
 import MaleAvatar from "assets/images/male-avatar.svg";
 import FemaleAvatar from "assets/images/female-avatar.svg";
 import MainModal from "components/Modal/ConfirmModal";
+import CircleProfileImage from "components/CircleProfileImage";
 import "./style.scss";
 
 const Navbar = ({ show, setShow }) => {
@@ -55,22 +56,16 @@ const Navbar = ({ show, setShow }) => {
               <i className="fas fa-comments"></i>
             </div>
           </Link>
-          <Link to="/profile" className="icons">
-            {userProfile && (
-              <div className="profile-wrapper">
-                {userProfile.userData.photoProfile ? (
-                  <img
-                    src={userProfile.userData.photoProfile}
-                    alt="user-icon"
-                  />
-                ) : (
-                  <div className="initial">
-                    {setIconImage(userProfile.userData)}
-                  </div>
-                )}
-              </div>
-            )}
-          </Link>
+          {userProfile && (
+            <div className="icons">
+              <CircleProfileImage
+                data={{
+                  email: userProfile.email,
+                  size: 32,
+                }}
+              />
+            </div>
+          )}
           <div className="icons" onClick={() => setOpenmodal(true)}>
             <i className="fas fa-sign-out-alt"></i>
           </div>

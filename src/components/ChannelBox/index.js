@@ -4,14 +4,13 @@ import { useUserContext } from "contexts/UserContext";
 import Friendship from "assets/images/friendship.svg";
 import CircleProfileImage from "components/CircleProfileImage";
 import { Link } from "react-router-dom";
-import MaleAvatar from "assets/images/male-avatar.svg";
-import FemaleAvatar from "assets/images/female-avatar.svg";
 import { Spinner } from "reactstrap";
 import "./style.scss";
+import { SetNameFromEmail } from "utils/helpers";
 
 const ChannelBox = ({ content }) => {
   const history = useHistory();
-  const { getChannels, deleteChannel } = useUserContext();
+  const { getChannels, deleteChannel, people } = useUserContext();
   const { sender, activeChannel } = content;
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,6 +60,20 @@ const ChannelBox = ({ content }) => {
     }
   };
 
+  const getUsername = (email) => {
+    if (people) {
+      const findUser = people.find((e) => e.email === email);
+      return (
+        <div className="username">
+          {findUser.userData.username
+            ? findUser.userData.username
+            : SetNameFromEmail(findUser.email)}
+        </div>
+      );
+    }
+    return null;
+  };
+
   const monitorChannel = () => {
     if (loading) {
       return (
@@ -78,9 +91,9 @@ const ChannelBox = ({ content }) => {
                 className={`channel ${handleActiveChannel(channel)}`}
                 onClick={(e) => clickedChannel(e, channel)}
               >
-                <CircleProfileImage data={{ user: recipient, size: 48 }} />
+                <CircleProfileImage data={{ email: recipient.email, size: 48 }} />
                 <div className="desc-area">
-                  <div className="username">{recipient.username}</div>
+                  {getUsername(recipient.email)}
                   <div className="time-updated">{channel.updated_at}</div>
                 </div>
                 <div

@@ -40,18 +40,10 @@
             color: #555;
           }
         }
-        .profile-wrapper {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          overflow: hidden;
-          background: #000;
+        .profile-image {
+          margin: 0 !important;
           img {
-            position: relative;
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-            bottom: 2px;
+            vertical-align: inherit;
           }
         }
       }

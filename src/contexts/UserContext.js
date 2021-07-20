@@ -630,7 +630,7 @@ export const UserProvider = ({ children }) => {
     });
   };
 
-  const getTotalLikes = (data) => {
+  const getDataLikes = (data) => {
     return new Promise(async (resolve, reject) => {
       const collect = fs
         .collection("posts")
@@ -664,7 +664,7 @@ export const UserProvider = ({ children }) => {
     sendLike,
     sendUnlike,
     checkPostLike,
-    getTotalLikes,
+    getDataLikes,
     getAllPostData,
   };
 

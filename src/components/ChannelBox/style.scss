@@ -4,6 +4,8 @@
   width: 500px;
   padding: 24px 12px;
   box-shadow: 16px 0 24px -20px #ddd;
+  overflow-y: auto;
+  max-height: 625px;
   .blank-channel {
     text-align: center;
     img {
