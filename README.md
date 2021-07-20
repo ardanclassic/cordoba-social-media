@@ -2,6 +2,8 @@
 
 A simple & clean social media that have a set of features and help people socialize their passion.
 
+![Cordoba Preview](https://user-images.githubusercontent.com/41061962/126287607-81b4bbfe-3b8c-4b1c-9572-c54cc0b45fc3.png)
+
 ## Let's explore [Cordoba](https://incordoba.netlify.app/), and have fun!
 
 ### Features
