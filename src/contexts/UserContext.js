@@ -431,7 +431,7 @@ export const UserProvider = ({ children }) => {
 
   const getAllPostData = (data) => {
     return new Promise(async (resolve, reject) => {
-      resolve(fs.collection("posts").limit(5).where("email", "==", data.email));
+      resolve(fs.collection("posts").where("email", "==", data.email));
     });
   };
 
