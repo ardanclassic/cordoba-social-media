@@ -35,32 +35,37 @@ const PeopleBox = () => {
       return (
         <React.Fragment>
           <h5>Suggestion For You</h5>
-          {otherPeople.map((person) => {
-            if (person.email !== currentUser.email) {
-              return (
-                <Link
-                  to={`/profile/${person.userID.slice(0, 5)}`}
-                  key={person.userID}
-                  className="person"
-                >
-                  <div className="user-icon">
-                    {person.userData.photoProfile ? (
-                      <img src={person.userData.photoProfile} alt="user-icon" />
-                    ) : (
-                      <div className="initial">
-                        {setIconImage(person.userData)}
-                      </div>
-                    )}
-                  </div>
-                  <div className="username">
-                    {person.userData.username
-                      ? person.userData.username
-                      : SetNameFromEmail(person.email)}
-                  </div>
-                </Link>
-              );
-            }
-          })}
+          <div className="people-wrapper">
+            {otherPeople.map((person) => {
+              if (person.email !== currentUser.email) {
+                return (
+                  <Link
+                    to={`/profile/${person.userID.slice(0, 5)}`}
+                    key={person.userID}
+                    className="person"
+                  >
+                    <div className="user-icon">
+                      {person.userData.photoProfile ? (
+                        <img
+                          src={person.userData.photoProfile}
+                          alt="user-icon"
+                        />
+                      ) : (
+                        <div className="initial">
+                          {setIconImage(person.userData)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="username">
+                      {person.userData.username
+                        ? person.userData.username
+                        : SetNameFromEmail(person.email)}
+                    </div>
+                  </Link>
+                );
+              }
+            })}
+          </div>
         </React.Fragment>
       );
     }
