@@ -5,6 +5,7 @@ A simple & clean social media that have a set of features and help people social
 ## Let's explore [Cordoba](https://incordoba.netlify.app/), and have fun!
 
 ### Features
+- Authentication System (Login, Register, and Forgot Password)
 - Dashboard
 - Profile
 - Content Posting & Management
