@@ -81,7 +81,7 @@ const PostHeader = ({ dataHeader }) => {
 
   return (
     <div className="post-header">
-      <CircleProfileImage data={{ user: user, size: 48 }} />
+      <CircleProfileImage data={{ email: user.email, size: 48 }} />
       <div className="desc-zone">
         <Link to={`/profile/${user.userID.slice(0, 5)}`}>
           <div className="username">

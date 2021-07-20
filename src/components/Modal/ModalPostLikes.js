@@ -1,12 +1,13 @@
 import CircleProfileImage from "components/CircleProfileImage";
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-responsive-modal";
-import { Spinner } from "reactstrap";
+import { useHistory } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import { SetNameFromEmail } from "utils/helpers";
 import moment from "moment";
 
 const ModalPostLikes = ({ data }) => {
+  const history = useHistory();
   const { openLikeModal, setOpenLikeModal, post, user, getDataLikes } = data;
   const { people } = useUserContext();
   const [loading, setLoading] = useState(true);
@@ -75,7 +76,13 @@ const ModalPostLikes = ({ data }) => {
               fromNow: moment(person.created_at).fromNow(),
             };
             return (
-              <div key={person.likeID} className="person">
+              <div
+                key={person.likeID}
+                className="person"
+                onClick={() =>
+                  history.push(`/profile/${person.senderID.slice(0, 5)}`)
+                }
+              >
                 <CircleProfileImage data={{ email: person.sender, size: 40 }} />
                 <div className="desc-area">
                   {getUsername(person.sender)}
