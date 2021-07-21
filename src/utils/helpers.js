@@ -7,7 +7,6 @@ export const createNewUser = (data) => {
       userID: data.user.uid,
       email: data.user.email,
       created_at: new Date().getTime(),
-      login_at: new Date().getTime(),
       userData: {
         ...data.additionalUserInfo.profile,
         gender: "male",
@@ -24,7 +23,7 @@ export const createNewUser = (data) => {
       },
     })
     .then(() => {
-      console.log("User successfully created!");
+      // console.log("User successfully created!");
       return;
     })
     .catch((error) => {

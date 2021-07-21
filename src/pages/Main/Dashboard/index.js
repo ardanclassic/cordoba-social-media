@@ -10,6 +10,7 @@ import MaleAvatar from "assets/images/male-avatar.svg";
 import FemaleAvatar from "assets/images/female-avatar.svg";
 import "./style.scss";
 import AllPostData from "components/POST_GROUP/AllPostData";
+import moment from "moment";
 
 const Dashboard = () => {
   const { people, getLoginUser } = useUserContext();
@@ -18,6 +19,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // const milli = moment("19-07-2021, 09.07", "DD-MM-YYYY, HH:mm").valueOf();
+    // console.log(milli);
+
     if (people && currentUser) {
       setLoading(false);
       getLoginUser().then((user) => {

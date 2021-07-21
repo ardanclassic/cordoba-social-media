@@ -16,22 +16,25 @@ export const UserProvider = ({ children }) => {
   const { currentUser } = useAuth();
   const [people, setPeoples] = useState();
   const [loading, setLoading] = useState(true);
-  const [chats, setChats] = useState([]);
+  // const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    getAllPeople();
-    setLoading(false);
-  }, [history, location]);
-
-  const getAllPeople = () => {
-    fs.collection("users").onSnapshot((snap) => {
+    let mounted = true;
+    fs.collection("users").orderBy("created_at").onSnapshot((snap) => {
       let users = [];
       snap.forEach((doc) => {
         users.push(doc.data());
       });
-      setPeoples(users);
+      if (mounted) {
+        setPeoples(users);
+        setLoading(false);
+      }
     });
-  };
+
+    return () => {
+      mounted = false;
+    };
+  }, [history, location]);
 
   const getLoginUser = () => {
     return new Promise(async (resolve, reject) => {
