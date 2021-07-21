@@ -6,6 +6,8 @@ export const createNewUser = (data) => {
     .set({
       userID: data.user.uid,
       email: data.user.email,
+      created_at: new Date().getTime(),
+      login_at: new Date().getTime(),
       userData: {
         ...data.additionalUserInfo.profile,
         gender: "male",

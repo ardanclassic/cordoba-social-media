@@ -6,6 +6,7 @@ import EditComment from "components/Modal/EditComment";
 import { Spinner } from "reactstrap";
 import { SetNameFromEmail } from "utils/helpers";
 import "./style.scss";
+import moment from "moment";
 
 const ShowComment = ({ data }) => {
   const { showComment, post, user, currentUser } = data;
@@ -42,7 +43,7 @@ const ShowComment = ({ data }) => {
     }
     return (
       <div className="created-at">
-        {data.created_at} at {data.timeFormat}
+        {moment(data.created_at).format("LL")} at {data.timeFormat}
       </div>
     );
   };

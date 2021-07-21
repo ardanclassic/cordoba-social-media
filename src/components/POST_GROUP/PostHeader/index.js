@@ -7,6 +7,7 @@ import DropdownSelect from "components/Dropdown";
 import ConfirmModal from "components/Modal/ConfirmModal";
 import ModalEditPost from "components/Modal/ModalEditPost";
 import "./style.scss";
+import moment from "moment";
 
 const PostHeader = ({ dataHeader }) => {
   const { post, user, currentUser } = dataHeader;
@@ -41,7 +42,7 @@ const PostHeader = ({ dataHeader }) => {
     }
     return (
       <div className="created-at">
-        {data.created_at} at {data.timeFormat}
+        {moment(data.created_at).format("LL")} at {data.timeFormat}
       </div>
     );
   };

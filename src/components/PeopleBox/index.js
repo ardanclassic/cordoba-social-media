@@ -18,6 +18,7 @@ const PeopleBox = () => {
     if (people && currentUser) {
       setLoading(false);
       const checkUser = people.filter((e) => e.email !== currentUser.email);
+      // const sortedUser = checkUser.sort((a, b) => )
       if (checkUser) setotherPeople(checkUser);
     }
   }, [currentUser, people]);

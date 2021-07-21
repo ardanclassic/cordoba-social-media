@@ -8,6 +8,10 @@ body {
   font-family: "Numans", sans-serif;
 }
 
+.mobile-container {
+  display: none;
+}
+
 .container {
   align-content: center;
   max-width: 100%;
@@ -84,5 +88,28 @@ body {
   }
   .react-responsive-modal-closeButton {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 980px) {
+  .container {
+    display: none;
+  }
+  .mobile-container {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 90%;
+    img {
+      width: 70%;
+      margin: 3em auto;
+    }
+    .text {
+      max-width: 500px;
+      color: crimson;
+    }
   }
 }
