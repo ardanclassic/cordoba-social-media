@@ -79,6 +79,7 @@ export const createNewChannel = async (data) => {
     created_at: new Date().getTime(),
     updated_at: new Date().getTime(),
     stat_change: new Date().getTime(),
+    typing: null,
     status: "active",
     users: [
       {

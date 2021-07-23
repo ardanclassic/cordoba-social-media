@@ -187,7 +187,6 @@ export const UserProvider = ({ children }) => {
               const message = {
                 ...chatData,
                 channelID: create.channelID,
-                typing: null,
               };
               /** post data chat to firestore */
               fs.collection("conversations")
@@ -302,7 +301,11 @@ export const UserProvider = ({ children }) => {
         if (channel) {
           if (data.status) {
             fs.collection("conversations").doc(channel.channelID).update({
-              typing: data.sender,
+              typing: {
+                email: data.sender.email,
+                userID: data.sender.userID,
+                username: data.sender.userData.username,
+              },
             });
           } else {
             fs.collection("conversations").doc(channel.channelID).update({

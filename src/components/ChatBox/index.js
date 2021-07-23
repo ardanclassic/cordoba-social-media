@@ -39,29 +39,15 @@ const ChatBox = ({ content }) => {
     );
 
     if (sender && recipient) {
-      readChat({ sender, recipient, type: "first-phase" })
-        .then((collect) => {
-          collect.onSnapshot((snap) => {
-            readChat({ snap, type: "second-phase" }).then((chats) => {
-              if (mounted) {
-                setLoading(false);
-                setDialog(chats);
-                if (endline.current) {
-                  endline.current.scrollIntoView();
-                }
-              }
-            });
-          });
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-
-      mounted && setSenderTypingStatus({ sender, recipient, status: typing });
+      handleReadChat();
+      setSenderTypingStatus({ sender, recipient, status: typing });
       checkTypingStatus({ sender, recipient }).then((collect) => {
         collect.onSnapshot((snap) => {
-          const typingStatus = snap.data().typing;
-          mounted && setTyper(typingStatus);
+          if (snap.data()) {
+            const typingStatus = snap.data().typing;
+            if (typingStatus) mounted && setTyper(typingStatus);
+            else mounted && setTyper(null);
+          }
         });
       });
     } else {
@@ -158,13 +144,33 @@ const ChatBox = ({ content }) => {
     }
   };
 
+  const handleReadChat = () => {
+    readChat({ sender, recipient, type: "first-phase" })
+      .then((collect) => {
+        collect.onSnapshot((snap) => {
+          readChat({ snap, type: "second-phase" }).then((chats) => {
+            if (mounted) {
+              setLoading(false);
+              setDialog(chats);
+              if (endline.current) {
+                endline.current.scrollIntoView();
+              }
+            }
+          });
+        });
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
   const ShowWhoTyping = () => {
     return (
       typer &&
       typer.email !== sender.email && (
         <div className="typer-status">
-          {typer.userData.username
-            ? typer.userData.username
+          {typer.username
+            ? typer.username
             : SetNameFromEmail(typer.email)}
           <span> is typing . . .</span>
         </div>
@@ -172,19 +178,16 @@ const ChatBox = ({ content }) => {
     );
   };
 
-  const adjustRoomHeight = (e) => {
-    e && setMessage(e.target.value);
-  };
-
   const handleKeyDown = (e) => {
-    adjustRoomHeight();
-    mounted && setTyping(true);
 
     if (e.key === "Enter" && e.shiftKey) {
     } else if (e.key === "Enter") {
       inputRef.current.style.height = `50px`;
       e.preventDefault();
       handleSubmit(e);
+    } else if (e.key !== "Alt") {
+      // console.log(e.key);
+      setTyping(true);
     }
   };
 
@@ -203,7 +206,9 @@ const ChatBox = ({ content }) => {
       const created = new Date();
       const status = "unread";
       const data = { sender, recipient, message, created, status };
-      sendMessage(data);
+      sendMessage(data).then(
+        (result) => result === "create" && handleReadChat()
+      );
     } else {
       setMessage("");
     }
@@ -231,7 +236,7 @@ const ChatBox = ({ content }) => {
             name="chatinput"
             className="input chatinput"
             placeholder="write your chat . . ."
-            onKeyUp={(e) => adjustRoomHeight(e)}
+            onKeyUp={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e)}
             onChange={(e) => handleChange(e.target.value)}
             value={message}
