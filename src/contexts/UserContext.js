@@ -20,16 +20,18 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     let mounted = true;
-    fs.collection("users").orderBy("created_at").onSnapshot((snap) => {
-      let users = [];
-      snap.forEach((doc) => {
-        users.push(doc.data());
+    fs.collection("users")
+      .orderBy("created_at")
+      .onSnapshot((snap) => {
+        let users = [];
+        snap.forEach((doc) => {
+          users.push(doc.data());
+        });
+        if (mounted) {
+          setPeoples(users);
+          setLoading(false);
+        }
       });
-      if (mounted) {
-        setPeoples(users);
-        setLoading(false);
-      }
-    });
 
     return () => {
       mounted = false;
@@ -185,6 +187,7 @@ export const UserProvider = ({ children }) => {
               const message = {
                 ...chatData,
                 channelID: create.channelID,
+                typing: null,
               };
               /** post data chat to firestore */
               fs.collection("conversations")
@@ -214,7 +217,7 @@ export const UserProvider = ({ children }) => {
                 .doc(channel.channelID)
                 .collection("chatroom")
                 .orderBy("created_at", "desc")
-                .limit(200);
+                .limit(1000);
 
               resolve(collect);
             })
@@ -289,6 +292,37 @@ export const UserProvider = ({ children }) => {
           resolve(channels);
         }
       }
+    });
+  };
+
+  const setSenderTypingStatus = (data) => {
+    return new Promise(async (resolve, reject) => {
+      /** get channel */
+      checkChannelExisting(data).then((channel) => {
+        if (channel) {
+          if (data.status) {
+            fs.collection("conversations").doc(channel.channelID).update({
+              typing: data.sender,
+            });
+          } else {
+            fs.collection("conversations").doc(channel.channelID).update({
+              typing: null,
+            });
+          }
+        }
+      });
+    });
+  };
+
+  const checkTypingStatus = (data) => {
+    return new Promise(async (resolve, reject) => {
+      /** get channel */
+      checkChannelExisting(data).then((channel) => {
+        if (channel) {
+          const collect = fs.collection("conversations").doc(channel.channelID);
+          resolve(collect);
+        }
+      });
     });
   };
 
@@ -652,6 +686,8 @@ export const UserProvider = ({ children }) => {
     updateProfile,
     sendMessage,
     readChat,
+    setSenderTypingStatus,
+    checkTypingStatus,
     deleteChat,
     getChannels,
     deleteChannel,

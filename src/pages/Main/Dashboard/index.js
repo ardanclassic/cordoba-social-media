@@ -8,9 +8,8 @@ import { SetNameFromEmail } from "utils/helpers";
 import DashboardLoader from "assets/loader/dashboard";
 import MaleAvatar from "assets/images/male-avatar.svg";
 import FemaleAvatar from "assets/images/female-avatar.svg";
-import "./style.scss";
 import AllPostData from "components/POST_GROUP/AllPostData";
-import moment from "moment";
+import "./style.scss";
 
 const Dashboard = () => {
   const { people, getLoginUser } = useUserContext();

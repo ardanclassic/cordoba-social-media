@@ -1,41 +1,86 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import PeopleSearch from "assets/images/people-search.svg";
 import autosize from "autosize";
 import Linkify from "react-linkify";
 import { Spinner } from "reactstrap";
+import { DebounceInput } from "react-debounce-input";
 import "./style.scss";
+import { SetNameFromEmail } from "utils/helpers";
 
 const ChatBox = ({ content }) => {
   const location = useLocation();
   let inputRef = useRef(null);
   let endline = useRef(null);
 
-  const { sendMessage, readChat, deleteChat } = useUserContext();
+  const {
+    sendMessage,
+    readChat,
+    deleteChat,
+    setSenderTypingStatus,
+    checkTypingStatus,
+  } = useUserContext();
   const { sender, recipient } = content;
   const [message, setMessage] = useState("");
   const [dialog, setDialog] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [typer, setTyper] = useState(null);
   const [dialogWindowHeight, setdialogWindowHeight] = useState();
 
   useEffect(() => {
     setMounted(true);
     inputRef.current.focus();
-    autosize(document.querySelector("textarea"));
+    autosize(inputRef.current);
     setdialogWindowHeight(
-      document.querySelector(".dialog-window").offsetHeight
+      document.querySelector(".dialog-window").offsetHeight + 50
     );
 
-    if (sender && recipient) handleReadChat();
-    else {
+    if (sender && recipient) {
+      readChat({ sender, recipient, type: "first-phase" })
+        .then((collect) => {
+          collect.onSnapshot((snap) => {
+            readChat({ snap, type: "second-phase" }).then((chats) => {
+              if (mounted) {
+                setLoading(false);
+                setDialog(chats);
+                if (endline.current) {
+                  endline.current.scrollIntoView();
+                }
+              }
+            });
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+
+      mounted && setSenderTypingStatus({ sender, recipient, status: typing });
+      checkTypingStatus({ sender, recipient }).then((collect) => {
+        collect.onSnapshot((snap) => {
+          const typingStatus = snap.data().typing;
+          mounted && setTyper(typingStatus);
+        });
+      });
+    } else {
       if (!location.pathname.split("/")[2]) {
         setLoading(false);
       }
     }
     return () => setMounted(false);
-  }, [sender, recipient, readChat, dialogWindowHeight]);
+  }, [
+    sender,
+    recipient,
+    readChat,
+    dialogWindowHeight,
+    location,
+    checkTypingStatus,
+    typing,
+    mounted,
+    setSenderTypingStatus,
+  ]);
 
   const monitorChatRoom = () => {
     if (loading) {
@@ -66,7 +111,7 @@ const ChatBox = ({ content }) => {
                       <div className={`text ${fromMe ? "from-me" : "other"}`}>
                         <div
                           className="remove"
-                          onClick={() => removeChat(chat)}
+                          onClick={() => deleteChat(chat)}
                         >
                           <i className="far fa-trash-alt"></i>
                         </div>
@@ -93,6 +138,7 @@ const ChatBox = ({ content }) => {
                     </div>
                   );
                 })}
+                <ShowWhoTyping />
               </React.Fragment>
             );
           });
@@ -112,88 +158,90 @@ const ChatBox = ({ content }) => {
     }
   };
 
-  const removeChat = (data) => {
-    deleteChat(data);
+  const ShowWhoTyping = () => {
+    return (
+      typer &&
+      typer.email !== sender.email && (
+        <div className="typer-status">
+          {typer.userData.username
+            ? typer.userData.username
+            : SetNameFromEmail(typer.email)}
+          <span> is typing . . .</span>
+        </div>
+      )
+    );
   };
 
-  const handleReadChat = () => {
-    readChat({ sender, recipient, type: "first-phase" })
-      .then((collect) => {
-        collect.onSnapshot((snap) => {
-          readChat({ snap, type: "second-phase" }).then((chats) => {
-            if (mounted) {
-              setLoading(false);
-              setDialog(chats);
-              if (endline.current) {
-                endline.current.scrollIntoView();
-              }
-            }
-          });
-        });
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
-  };
-
-  const adjustRoomHeight = () => {
-    const dialogWindow = document.querySelector(".dialog-window");
-    const textArea = document.querySelector("textarea");
-    dialogWindow.style.height = `${
-      dialogWindowHeight + 50 - textArea.clientHeight
-    }px`;
+  const adjustRoomHeight = (e) => {
+    e && setMessage(e.target.value);
   };
 
   const handleKeyDown = (e) => {
     adjustRoomHeight();
+    mounted && setTyping(true);
+
     if (e.key === "Enter" && e.shiftKey) {
     } else if (e.key === "Enter") {
-      document.querySelector("textarea").style.height = `50px`;
+      inputRef.current.style.height = `50px`;
       e.preventDefault();
       handleSubmit(e);
     }
   };
 
+  const handleChange = (text) => {
+    setMessage(text);
+    setTyping(false);
+    setTyper(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (sender && recipient && message) {
+      setTyping(false);
       setLoading(true);
       setMessage("");
       const created = new Date();
       const status = "unread";
       const data = { sender, recipient, message, created, status };
-      sendMessage(data).then((result) => {
-        if (result === "create") handleReadChat();
-      });
+      sendMessage(data);
     } else {
       setMessage("");
     }
   };
 
+  const dh = inputRef.current
+    ? `${98}% - ${inputRef.current.offsetHeight}px`
+    : `${98}% - 125px`;
+
   return (
     <div className="chatbox">
-      <div className="dialog-window">
-        {monitorChatRoom()}
-        <div ref={endline} id="endline"></div>
+      <div className="chat-wrapper">
+        <div className="dialog-window" style={{ height: `calc(${dh})` }}>
+          {monitorChatRoom()}
+          <div ref={endline} id="endline"></div>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <DebounceInput
+            element="textarea"
+            minLength={1}
+            debounceTimeout={700}
+            inputRef={inputRef}
+            required
+            name="chatinput"
+            className="input chatinput"
+            placeholder="write your chat . . ."
+            onKeyUp={(e) => adjustRoomHeight(e)}
+            onKeyDown={(e) => handleKeyDown(e)}
+            onChange={(e) => handleChange(e.target.value)}
+            value={message}
+          />
+
+          <button className="send-chat" type="submit">
+            <i className="far fa-paper-plane"></i>
+          </button>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit}>
-        <textarea
-          ref={inputRef}
-          required
-          name="chatinput"
-          className="input chatinput"
-          placeholder="write your chat . . ."
-          onKeyUp={(e) => adjustRoomHeight(e)}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
-        ></textarea>
-
-        <button className="send-chat" type="submit">
-          <i className="far fa-paper-plane"></i>
-        </button>
-      </form>
     </div>
   );
 };

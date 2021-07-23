@@ -6,10 +6,10 @@ import MainPage from "pages/Main";
 import SignIn from "pages/Auth/SignIn";
 import SignUp from "pages/Auth/SignUp";
 import ForgotPassword from "pages/Auth/ForgotPassword";
+import MobileScreen from "assets/images/mobile-screen.svg";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-responsive-modal/styles.css";
-import MobileScreen from "assets/images/mobile-screen.svg";
 import "./styles.scss";
 
 function App() {
