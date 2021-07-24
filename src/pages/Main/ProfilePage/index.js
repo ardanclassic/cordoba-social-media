@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import { useAuth } from "contexts/AuthContext";
 import ProfileLoader from "assets/loader/profile";
-import ProfileHeader from "components/ProfileHeader";
+import ProfileHeader from "components/PROFILE_GROUP/ProfileHeader";
 import ProfileContent from "components/PROFILE_GROUP/ProfileContent";
 import "./style.scss";
 

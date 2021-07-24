@@ -193,33 +193,38 @@
       }
     }
   }
-  .like-area {
-    padding: 1em;
-    max-height: 500px;
-    overflow-y: auto;
-    .person {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      color: #555;
-      margin: 8px auto;
-      background-color: #e7ecf3;
-      padding: 8px 16px;
-      border-radius: 24px;
-      text-decoration: none;
-      &:hover {
-        background-color: #dde5ec;
-      }
-      .desc-area {
-        margin-left: 8px;
-        .username {
-          font-weight: bold;
+  .confirm-area {
+    .person-area {
+      padding: 1em;
+      max-height: 500px;
+      overflow-y: auto;
+      .person {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #555;
+        margin: 8px auto;
+        background-color: #e7ecf3;
+        padding: 8px 16px;
+        border-radius: 24px;
+        text-decoration: none;
+        &:hover {
+          background-color: #dde5ec;
         }
-        .created-at {
-          font-size: 12px;
+        .desc-area {
+          margin-left: 8px;
+          .username {
+            font-weight: bold;
+          }
+          .created-at {
+            font-size: 12px;
+          }
         }
       }
+    }
+    h3 {
+      text-align: center;
     }
   }
 }

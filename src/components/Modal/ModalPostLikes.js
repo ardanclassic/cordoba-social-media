@@ -64,7 +64,7 @@ const ModalPostLikes = ({ data }) => {
   const ListPersons = () => {
     if (persons) {
       return (
-        <div className="like-area">
+        <div className="person-area">
           {persons.map((person) => {
             const time = {
               hoursDuration: moment().diff(moment(person.created_at), "hours"),
@@ -99,7 +99,7 @@ const ModalPostLikes = ({ data }) => {
   return (
     <Modal open={openLikeModal} onClose={onCloseModal} center>
       <div className="confirm-area">
-        <div className="text">People who like your post</div>
+        <div className="text">People who like this post</div>
         <ListPersons />
         <div className="button-area">
           <button className="confirm" onClick={onCloseModal}>
