@@ -25,13 +25,17 @@ const ModalFollow = ({ data }) => {
   const getUsername = (email) => {
     if (people) {
       const findUser = people.find((e) => e.email === email);
-      return (
-        <div className="username">
-          {findUser.userData.username
-            ? findUser.userData.username
-            : SetNameFromEmail(findUser.email)}
-        </div>
-      );
+      if (findUser) {
+        return (
+          <div className="username">
+            {findUser.userData.username
+              ? findUser.userData.username
+              : SetNameFromEmail(findUser.email)}
+          </div>
+        );
+      } else {
+        return <div className="username">{SetNameFromEmail(email)}</div>;
+      }
     }
     return null;
   };

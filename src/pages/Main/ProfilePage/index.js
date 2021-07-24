@@ -11,6 +11,7 @@ const ProfilePage = () => {
   const location = useLocation();
   const { currentUser } = useAuth();
   const { people } = useUserContext();
+  const [loading, setLoading] = useState(true);
   const [thisUser, setThisUser] = useState(null);
 
   useEffect(() => {
@@ -18,10 +19,16 @@ const ProfilePage = () => {
       const getID = location.pathname.split("/")[2];
       if (getID) {
         const findUser = people.find((e) => e.userID.slice(0, 5) === getID);
+        setLoading(false);
         setThisUser(findUser);
       } else {
         const findUser = people.find((e) => e.email === currentUser.email);
-        setThisUser(findUser);
+        if (findUser) {
+          setLoading(false);
+          setThisUser(findUser);
+        } else {
+          setLoading(false);
+        }
       }
     }
   }, [location, people, currentUser]);
@@ -34,20 +41,29 @@ const ProfilePage = () => {
   };
 
   const HandleElement = () => {
-    if (thisUser) {
+    if (loading) {
       return (
-        <div className="profile-area">
-          <ProfileHeader content={content} />
-          <div className="divider"></div>
-          <ProfileContent content={content} />
+        <div className="loading">
+          <ProfileLoader />
         </div>
       );
+    } else {
+      if (thisUser) {
+        return (
+          <div className="profile-area">
+            <ProfileHeader content={content} />
+            <div className="divider"></div>
+            <ProfileContent content={content} />
+          </div>
+        );
+      } else {
+        return (
+          <div className="empty-profile">
+            No Profile Found
+          </div>
+        );
+      }
     }
-    return (
-      <div className="loading">
-        <ProfileLoader />
-      </div>
-    )
   };
 
   return (
