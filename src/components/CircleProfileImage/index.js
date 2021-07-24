@@ -23,23 +23,29 @@ const CircleProfileImage = ({ data }) => {
         if (userInfo.userData.photoProfile) {
           setImageProfile(userInfo.userData.photoProfile);
         }
+      } else {
+        setImageProfile(MaleAvatar)
       }
     }
   }, [people, userInfo, email]);
 
-  if (userInfo) {
-    return (
-      <div
-        className="profile-image"
-        style={{ width: `${size}px`, height: `${size}px` }}
-      >
+  return (
+    <div
+      className="profile-image"
+      style={{ width: `${size}px`, height: `${size}px` }}
+    >
+      {userInfo ? (
         <Link to={`/profile/${userInfo.userID.slice(0, 5)}`}>
           <img src={imageProfile} alt="icon-profile" />
         </Link>
-      </div>
-    );
-  }
-  return null;
+      ) : (
+        <Link to="#">
+          <img src={imageProfile} alt="icon-profile" />
+        </Link>
+      )}
+    </div>
+  );
+
 };
 
 export default CircleProfileImage;

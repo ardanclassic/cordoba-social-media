@@ -94,16 +94,22 @@ const ShowComment = ({ data }) => {
     return null;
   };
 
-  const getUsername = (email) => {
+  const getUsername = (comment) => {
     if (people) {
-      const findUser = people.find((e) => e.email === email);
-      return (
-        <div className="username">
-          {findUser.userData.username
-            ? findUser.userData.username
-            : SetNameFromEmail(findUser.email)}
-        </div>
-      );
+      const findUser = people.find((e) => e.email === comment.sender);
+      if (findUser) {
+        return (
+          <div className="username">
+            {findUser.userData.username
+              ? findUser.userData.username
+              : SetNameFromEmail(findUser.email)}
+          </div>
+        );
+      } else {
+        return (
+          <div className="username">{SetNameFromEmail(comment.sender)}</div>
+        );
+      }
     }
     return null;
   };
@@ -127,7 +133,7 @@ const ShowComment = ({ data }) => {
                   />
                 </div>
                 <div className="body-content">
-                  {getUsername(comment.sender)}
+                  {getUsername(comment)}
                   <TimeFormat data={comment} />
                   <div className="text">{comment.comment}</div>
                   <HandleDropdownCase comment={comment} />

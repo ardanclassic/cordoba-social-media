@@ -72,7 +72,9 @@ const ChannelBox = ({ content }) => {
         </div>
       );
     }
-    return null;
+    return (
+      <div className="username">{SetNameFromEmail(email)}</div>
+    );
   };
 
   const monitorChannel = () => {
