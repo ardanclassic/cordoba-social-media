@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import Friendship from "assets/images/friendship.svg";
 import CircleProfileImage from "components/CircleProfileImage";

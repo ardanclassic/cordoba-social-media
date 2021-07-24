@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useUserContext } from "contexts/UserContext";
+// import { useUserContext } from "contexts/UserContext";
 import ChatInput from "components/CHAT_GROUP/ChatInput";
 import ChatDialog from "components/CHAT_GROUP/ChatDialog";
 import "./style.scss";
@@ -14,7 +14,6 @@ const ChatBox = ({ content }) => {
     triggerEndLine,
     setTriggerEndLine,
   } = content;
-  const { readChat } = useUserContext();
 
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);

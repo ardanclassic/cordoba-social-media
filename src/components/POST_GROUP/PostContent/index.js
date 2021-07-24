@@ -4,16 +4,14 @@ import Linkify from "react-linkify";
 import "./style.scss";
 
 const PostContent = ({ dataContent }) => {
-  const { post, user } = dataContent;
+  const { post } = dataContent;
   const [contentHeight, setContentHeight] = useState("auto");
-  const [showmore, setShowmore] = useState(false);
   const [openImage, setOpenImage] = useState(false);
 
   useEffect(() => {
     const length = post.content.length;
     if (length > 120) {
       setContentHeight("50px");
-      setShowmore(true);
     }
   }, [post]);
 

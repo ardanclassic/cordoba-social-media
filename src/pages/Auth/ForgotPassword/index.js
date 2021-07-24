@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ForgotIllustration from 'assets/images/forgot-password.svg'
 import { useAuth } from "contexts/AuthContext";
 import "../auth-style.scss";

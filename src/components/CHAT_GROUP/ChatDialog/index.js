@@ -25,7 +25,6 @@ const ChatDialog = ({ dataDialog }) => {
     setTriggerEndLine,
     dialogHeight,
     activeChannel,
-    keyBox,
   } = dataDialog;
 
   const [mounted, setMounted] = useState(false);

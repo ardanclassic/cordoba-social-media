@@ -10,14 +10,12 @@ const ModalPostLikes = ({ data }) => {
   const history = useHistory();
   const { openLikeModal, setOpenLikeModal, post, user, getDataLikes } = data;
   const { people } = useUserContext();
-  const [loading, setLoading] = useState(true);
   const [mounted, setmounted] = useState(false);
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
     setmounted(true);
     if (data && mounted) {
-      setLoading(false);
       getDataLikes({ post, user }).then((collect) => {
         collect.onSnapshot((snap) => {
           let totalLikes = [];

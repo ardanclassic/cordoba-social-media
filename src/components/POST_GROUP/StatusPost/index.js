@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useUserContext } from "contexts/UserContext";
 import { SetNameFromEmail } from "utils/helpers";
 import { Spinner } from "reactstrap";

@@ -42,6 +42,8 @@ const DropdownSelect = ({ data }) => {
                 <span className="text">{item.name}</span>
               </div>
             );
+          } else {
+            return null
           }
         })}
       </DropdownMenu>

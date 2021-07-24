@@ -9,7 +9,7 @@ const CircleProfileImage = ({ data }) => {
   const [imageProfile, setImageProfile] = useState();
   const { people } = useUserContext();
   const [userInfo, setUserInfo] = useState();
-  const { email, size, style } = data;
+  const { email, size } = data;
 
   useEffect(() => {
     if (people) {

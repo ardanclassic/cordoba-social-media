@@ -1,38 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import SignUpIllustration from 'assets/images/signup.svg'
 import { useAuth } from "contexts/AuthContext";
 import "../auth-style.scss";
 import "./style.scss";
 
 const SignUp = () => {
-  const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
   const { signUp, loginGoogle, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   /** cleanup from memory leaks */
   useEffect(() => {
-    return () => {};
+    setMounted(true);
+    return () => setMounted(false);
   }, []);
 
   const handleSubmit = async (e, type) => {
     e.preventDefault();
     try {
-      setError("");
-      setLoading(true);
+      mounted && setError("");
+      mounted && setLoading(true);
       if (type === "google") {
         await loginGoogle();
       } else {
         await signUp(emailRef.current.value, passwordRef.current.value);
       }
     } catch (error) {
-      setError(error.message);
+      mounted && setError(error.message);
     }
-    setLoading(false);
+    mounted && setLoading(false);
   };
 
   if (currentUser) {

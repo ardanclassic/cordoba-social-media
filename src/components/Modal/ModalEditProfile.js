@@ -103,6 +103,7 @@ const EditProfile = ({ content }) => {
   return (
     <Modal open={openmodal} onClose={onCloseModal} center>
       <h4>{title}</h4>
+      {error && <p className="text-danger">{error}</p>}
       <form disabled={loading} onSubmit={handleSubmit}>
         <div className="input-group form-group form-photo-profile">
           <span className="circle-image">

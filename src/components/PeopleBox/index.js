@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import { useAuth } from "contexts/AuthContext";
-import Loading from "assets/loader/list";
 import { SetNameFromEmail } from "utils/helpers";
 import MaleAvatar from "assets/images/male-avatar.svg";
 import FemaleAvatar from "assets/images/female-avatar.svg";
@@ -12,13 +11,10 @@ const PeopleBox = () => {
   const { people } = useUserContext();
   const { currentUser } = useAuth();
   const [otherPeople, setotherPeople] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (people && currentUser) {
-      setLoading(false);
       const checkUser = people.filter((e) => e.email !== currentUser.email);
-      // const sortedUser = checkUser.sort((a, b) => )
       if (checkUser) setotherPeople(checkUser);
     }
   }, [currentUser, people]);
@@ -64,6 +60,8 @@ const PeopleBox = () => {
                     </div>
                   </Link>
                 );
+              } else {
+                return null;
               }
             })}
           </div>

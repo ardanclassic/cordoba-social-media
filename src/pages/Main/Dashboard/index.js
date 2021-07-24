@@ -15,14 +15,14 @@ const Dashboard = () => {
   const { people, getLoginUser } = useUserContext();
   const { currentUser } = useAuth();
   const [userProfile, setUserProfile] = useState();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // const milli = moment("19-07-2021, 09.07", "DD-MM-YYYY, HH:mm").valueOf();
     // console.log(milli);
     if (people && currentUser) {
-      setLoading(false);
       getLoginUser().then((user) => {
+        // setLoading(false);
         setUserProfile(user);
       });
     }
@@ -60,9 +60,9 @@ const Dashboard = () => {
     return null;
   };
 
-  return (
-    <div className="dashboard">
-      {userProfile ? (
+  const ShowDashboard = () => {
+    if (userProfile) {
+      return (
         <React.Fragment>
           <div className="left-area">
             <ProfileBox />
@@ -76,11 +76,19 @@ const Dashboard = () => {
             <div className="group-suggestion"></div>
           </div>
         </React.Fragment>
-      ) : (
+      )
+    } else {
+      return (
         <div className="loader">
           <DashboardLoader />
         </div>
-      )}
+      );
+    }
+  };
+
+  return (
+    <div className="dashboard">
+      <ShowDashboard />
     </div>
   );
 };

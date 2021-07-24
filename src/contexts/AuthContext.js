@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
 import React, { useState, useEffect, useContext, createContext } from "react";
 import { useHistory } from "react-router-dom";
 import { auth, firestore } from "../firebaseConfig";
@@ -13,14 +13,17 @@ export function AuthProvider({ children }) {
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setLoading(false);
+    setMounted(true);
+    auth.onAuthStateChanged((user) => {
+      if (mounted) {
+        setCurrentUser(user);
+        setLoading(false);
+      }
     });
-    return unsubscribe;
-  }, [history]);
+  }, [mounted, history]);
 
   const signUp = async (email, password) => {
     await auth

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import { useAuth } from "contexts/AuthContext";
 import ChatBox from "components/CHAT_GROUP/ChatBox";

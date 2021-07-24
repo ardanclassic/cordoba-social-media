@@ -4,7 +4,7 @@ import { useUserContext } from "contexts/UserContext";
 import { useAuth } from "contexts/AuthContext";
 import ProfileLoader from "assets/loader/profile";
 import ProfileHeader from "components/ProfileHeader";
-import ProfileContent from "components/ProfileContent";
+import ProfileContent from "components/PROFILE_GROUP/ProfileContent";
 import "./style.scss";
 
 const ProfilePage = () => {

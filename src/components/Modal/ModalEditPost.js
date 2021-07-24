@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "react-responsive-modal";
 import { Spinner } from "reactstrap";
 import { useUserContext } from "contexts/UserContext";
-import { storage } from "firebaseConfig";
 import TextareaAutosize from "react-textarea-autosize";
 import "./style.scss";
 
 const EditPost = ({ content }) => {
   const { updateContentPost } = useUserContext();
-  const { openEdit, btnSubmit, title, post, setOpenEdit } = content;
+  const { openEdit, title, post, setOpenEdit } = content;
 
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoFile, setPhotoFile] = useState(null);
@@ -42,7 +41,7 @@ const EditPost = ({ content }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setError("");
+      // setError("");
       if (messageContent) {
         setLoading(true);
         const data = {
@@ -73,7 +72,7 @@ const EditPost = ({ content }) => {
         });
       }
     } catch (error) {
-      setError(error.message);
+      // setError(error.message);
     }
   };
 
@@ -142,56 +141,6 @@ const EditPost = ({ content }) => {
         </div>
       </form>
 
-      {/* <form className="form-edit-post" onSubmit={handleSubmit}>
-        <div className="input-group form-group form-image form-post-image">
-          {photo && (
-            <div className="image-area">
-              <i className="fas fa-times" onClick={(e) => removeImage(e)}></i>
-              <img src={photo} alt="post-pict" />
-            </div>
-          )}
-          <input
-            disabled={loading}
-            type="file"
-            name="post-image"
-            className="post-image"
-            onChange={(e) => onChangePhoto(e)}
-          ></input>
-        </div>
-        <div className="input-group form-group form-name">
-          <TextareaAutosize
-            required
-            disabled={loading}
-            value={messageContent}
-            onChange={(e) => setMessageContent(e.target.value)}
-            type="text"
-            className="form-control"
-            placeholder="your name"
-          />
-        </div>
-        <div className="btn-area">
-          <button
-            disabled={loading}
-            className="button btn-cancel"
-            type="button"
-            onClick={onCloseModal}
-          >
-            Cancel
-          </button>
-          <label htmlFor="image-post" className="custom-file-upload">
-            <i className="fas fa-image"></i>
-          </label>
-            <input
-              disabled={loading}
-              id="image-post"
-              type="file"
-              onChange={(e) => onChangePhoto(e)}
-            />
-          <button disabled={loading} type="submit" className="btn-submit">
-            {!loading ? btnSubmit : <Spinner color="light" />}
-          </button>
-        </div>
-      </form> */}
     </Modal>
   );
 };

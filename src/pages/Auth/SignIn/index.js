@@ -1,47 +1,52 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
-import LoginIllustration from 'assets/images/login.svg'
+import LoginIllustration from "assets/images/login.svg";
 import "../auth-style.scss";
 import "./style.scss";
 
 const SignIn = () => {
-  const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login, loginGoogle, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   /** cleanup from memory leaks */
   useEffect(() => {
-    return () => {};
+    setMounted(true);
+    return () => setMounted(false);
   }, []);
 
   const handleSubmit = async (e, type) => {
     e.preventDefault();
     try {
-      setError("");
-      setLoading(true);
+      mounted && setError("");
+      mounted && setLoading(true);
       if (type === "google") {
         await loginGoogle();
       } else {
         await login(emailRef.current.value, passwordRef.current.value);
       }
     } catch (error) {
-      setError(error.message);
+      mounted && setError(error.message);
     }
-    setLoading(false);
+    mounted && setLoading(false);
   };
 
   if (currentUser) {
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
   return (
     <div className="auth-container">
-      <img className="login-image" src={LoginIllustration} alt="pic-illustration" />
+      <img
+        className="login-image"
+        src={LoginIllustration}
+        alt="pic-illustration"
+      />
       <div className="card">
         <div className="card-header">
           <h3>Sign In</h3>
@@ -91,7 +96,12 @@ const SignIn = () => {
               <div className="divider">
                 <span>or</span>
               </div>
-              <button disabled={loading} className="btn btn-google" type="button" onClick={(e) => handleSubmit(e, 'google')}>
+              <button
+                disabled={loading}
+                className="btn btn-google"
+                type="button"
+                onClick={(e) => handleSubmit(e, "google")}
+              >
                 <i className="fab fa-google"></i>
                 <span>Login with Google</span>
               </button>
