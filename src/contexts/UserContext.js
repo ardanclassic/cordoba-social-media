@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { storage, firestore as fs } from "firebaseConfig";
-import { createNewChannel, checkChannelExisting } from "utils/helpers";
+import {
+  createNewChannel,
+  checkChannelExisting,
+  getUnread,
+} from "utils/helpers";
 import { useAuth } from "contexts/AuthContext";
 import moment from "moment";
 
@@ -20,6 +24,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     let mounted = true;
+    localStorage.clear();
     fs.collection("users")
       .orderBy("created_at")
       .onSnapshot((snap) => {
@@ -153,6 +158,8 @@ export const UserProvider = ({ children }) => {
             channelID: channelExist.channelID,
           };
 
+          const prevUnread = await getUnread(data, channelExist.channelID);
+
           /** update channel data on sender */
           fs.collection("users")
             .doc(data.sender.email)
@@ -169,6 +176,7 @@ export const UserProvider = ({ children }) => {
             .doc(channelExist.channelID)
             .update({
               updated_at: new Date().getTime(),
+              unread: prevUnread + 1,
             });
 
           /** post data chat to firestore */
@@ -207,6 +215,7 @@ export const UserProvider = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       if (data.type === "first-phase") {
         if (data.sender && data.recipient) {
+          localStorage.setItem("activeChannel", JSON.stringify(data.recipient));
           /** get channel */
           checkChannelExisting(data)
             .then((channel) => {
@@ -218,7 +227,7 @@ export const UserProvider = ({ children }) => {
                 .orderBy("created_at", "desc")
                 .limit(data.latestChat);
 
-              resolve(collect);
+              resolve({ collect, channelID: channel.channelID });
             })
             .catch((err) => {
               reject(null);
@@ -226,6 +235,20 @@ export const UserProvider = ({ children }) => {
         }
       } else {
         if (data.snap) {
+          /** reset unread data */
+          const activeChannel = JSON.parse(
+            localStorage.getItem("activeChannel")
+          );
+          if (activeChannel && data.recipient.email === activeChannel.email) {
+            fs.collection("users")
+              .doc(data.sender.email)
+              .collection("channels")
+              .doc(data.channelID)
+              .update({
+                unread: 0,
+              });
+          }
+
           /** prepare & collect all chats from chatroom */
           const dialogs = [];
           data.snap.forEach((chat) => {
@@ -264,6 +287,14 @@ export const UserProvider = ({ children }) => {
           reject(null);
         }
       }
+    });
+  };
+
+  const getChatNotif = () => {
+    return new Promise(async (resolve, reject) => {
+      resolve(
+        fs.collection("users").doc(currentUser.email).collection("channels")
+      );
     });
   };
 
@@ -695,6 +726,7 @@ export const UserProvider = ({ children }) => {
     checkTypingStatus,
     deleteChat,
     getChannels,
+    getChatNotif,
     deleteChannel,
     postNewContent,
     updateContentPost,

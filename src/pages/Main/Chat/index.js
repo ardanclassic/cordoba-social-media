@@ -14,32 +14,34 @@ const Chatting = () => {
   const [sender, setSender] = useState(null);
   const [initFirstChat, setInitFirstChat] = useState(true);
   const [activeChannel, setActiveChannel] = useState();
-  
-  useEffect(() => {
-    const unsubscribe = () => {
-      if (currentUser && people) {
-        const getID = location.pathname.split("/")[2];
-        if (getID) {
-          const findRecipient = people.find(
-            (e) => e.userID.slice(0, 5) === getID
-          );
-          setActiveChannel(findRecipient);
-          setRecipient(findRecipient);
-        }
-        const findSender = people.find((e) => e.email === currentUser.email);
-        setSender(findSender);
-      }
-    };
+  const [triggerEndLine, setTriggerEndLine] = useState(true);
 
-    return unsubscribe();
-  }, [location, people, currentUser, recipient]);
+  useEffect(() => {
+    let mounted = true;
+    if (currentUser && people) {
+      const getID = location.pathname.split("/")[2];
+      if (getID) {
+        const findRecipient = people.find(
+          (e) => e.userID.slice(0, 5) === getID
+        );
+        mounted && setActiveChannel(findRecipient);
+        mounted && setRecipient(findRecipient);
+      }
+      const findSender = people.find((e) => e.email === currentUser.email);
+      mounted && setSender(findSender);
+    }
+
+    return () => (mounted = false);
+  }, [location, people, currentUser]);
 
   const content = {
     sender,
     recipient,
     activeChannel,
     initFirstChat,
+    triggerEndLine,
     setInitFirstChat,
+    setTriggerEndLine,
   };
 
   return (

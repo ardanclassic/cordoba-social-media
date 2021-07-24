@@ -7,24 +7,31 @@ import "./style.scss";
 
 const ChatBox = ({ content }) => {
   const location = useLocation();
-  const { sender, recipient } = content;
+  const {
+    sender,
+    recipient,
+    activeChannel,
+    triggerEndLine,
+    setTriggerEndLine,
+  } = content;
   const { readChat } = useUserContext();
 
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [typing, setTyping] = useState(false);
   const [triggerInit, setTriggerInit] = useState(false);
-  const [triggerEndLine, setTriggerEndLine] = useState(true);
   const [typer, setTyper] = useState(null);
   const [dialogHeight, setDialogHeight] = useState("");
+  const [keyBox, setKeyBox] = useState();
 
   useEffect(() => {
     setMounted(true);
+    mounted && setKeyBox(new Date().getTime());
     if (!location.pathname.split("/")[2]) {
       setLoading(false);
     }
     return () => setMounted(false);
-  }, [mounted, sender, recipient, readChat, location]);
+  }, [mounted, sender, recipient, location]);
 
   const dataChat = {
     sender,
@@ -46,6 +53,8 @@ const ChatBox = ({ content }) => {
     dialogHeight,
     triggerInit,
     triggerEndLine,
+    activeChannel,
+    keyBox,
     setTyper,
     setTriggerEndLine,
     setLoading,
@@ -54,7 +63,7 @@ const ChatBox = ({ content }) => {
   return (
     <div className="chatbox">
       <div className="chat-wrapper">
-        <ChatDialog dataDialog={dataDialog} />
+        <ChatDialog key={keyBox} dataDialog={dataDialog} />
         <ChatInput dataChat={dataChat} />
       </div>
     </div>

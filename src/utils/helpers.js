@@ -41,16 +41,6 @@ export const SetNameFromEmail = (name) => {
   return words.join(" ");
 };
 
-export const getInitials = (name) => {
-  var names = name.split(" "),
-    initials = names[0].substring(0, 1).toUpperCase();
-
-  if (names.length > 1) {
-    initials += names[names.length - 1].substring(0, 1).toUpperCase();
-  }
-  return initials;
-};
-
 export const checkChannelExisting = (data) => {
   return new Promise(async (resolve, reject) => {
     const userlink = [data.sender.email, data.recipient.email];
@@ -131,4 +121,17 @@ export const createNewChannel = async (data) => {
     message: "success create new channel",
     channelID: dataChannel.channelID,
   };
+};
+
+export const getUnread = (data, channelID) => {
+  return new Promise((resolve, reject) => {
+    fs.collection("users")
+      .doc(data.recipient.email)
+      .collection("channels")
+      .doc(channelID)
+      .get()
+      .then((result) => {
+        resolve(result.data().unread);
+      });
+  });
 };

@@ -3,7 +3,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import Friendship from "assets/images/friendship.svg";
 import CircleProfileImage from "components/CircleProfileImage";
-import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import "./style.scss";
 import { SetNameFromEmail } from "utils/helpers";
@@ -11,7 +10,7 @@ import { SetNameFromEmail } from "utils/helpers";
 const ChannelBox = ({ content }) => {
   const history = useHistory();
   const { getChannels, deleteChannel, people } = useUserContext();
-  const { sender, activeChannel } = content;
+  const { sender, activeChannel, setTriggerEndLine } = content;
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -34,11 +33,13 @@ const ChannelBox = ({ content }) => {
       setTimeout(circleloop, 60 * 1000);
     })();
     return () => setMounted(false);
-  }, [sender, getChannels, activeChannel]);
+  }, [mounted, sender, getChannels, activeChannel]);
 
   const clickedChannel = (e, data) => {
-    const id = data.users.find((e) => e.email !== sender.email).id.slice(0, 5);
-    history.push(`/chat/${id}`);
+    const getRecipient = data.users.find((e) => e.email !== sender.email);
+    localStorage.setItem("activeChannel", JSON.stringify(getRecipient));
+    history.push(`/chat/${getRecipient.id.slice(0, 5)}`);
+    setTriggerEndLine(true);
   };
 
   const removeChannel = async (e, data) => {
@@ -91,10 +92,15 @@ const ChannelBox = ({ content }) => {
                 className={`channel ${handleActiveChannel(channel)}`}
                 onClick={(e) => clickedChannel(e, channel)}
               >
-                <CircleProfileImage data={{ email: recipient.email, size: 48 }} />
+                <CircleProfileImage
+                  data={{ email: recipient.email, size: 48 }}
+                />
                 <div className="desc-area">
                   {getUsername(recipient.email)}
                   <div className="time-updated">{channel.updated_at}</div>
+                  {channel.unread > 0 && (
+                    <div className="unread">{channel.unread}</div>
+                  )}
                 </div>
                 <div
                   className="delete-channel"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useUserContext } from "contexts/UserContext";
+import { useLocation } from "react-router-dom";
 import PeopleSearch from "assets/images/people-search.svg";
 import Linkify from "react-linkify";
 import { Spinner } from "reactstrap";
@@ -7,6 +8,7 @@ import { SetNameFromEmail } from "utils/helpers";
 import "./style.scss";
 
 const ChatDialog = ({ dataDialog }) => {
+  const location = useLocation();
   let endline = useRef(null);
   const prevScrollY = useRef(0);
   const { readChat, deleteChat, setSenderTypingStatus, checkTypingStatus } =
@@ -15,19 +17,19 @@ const ChatDialog = ({ dataDialog }) => {
   const {
     sender,
     recipient,
-    handleReadChat,
     triggerInit,
-    setLoading,
-    loading,
     typing,
     typer,
     setTyper,
     triggerEndLine,
     setTriggerEndLine,
     dialogHeight,
+    activeChannel,
+    keyBox,
   } = dataDialog;
 
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [dialog, setDialog] = useState([]);
   const [maxTop, setMaxTop] = useState(false);
   const [goingUp, setGoingUp] = useState(false);
@@ -36,7 +38,8 @@ const ChatDialog = ({ dataDialog }) => {
 
   useEffect(() => {
     setMounted(true);
-    if ((sender, recipient)) {
+    const pathID = location.pathname.split("/")[2];
+    if (sender && recipient && pathID) {
       const handleReadChat = () => {
         readChat({
           sender,
@@ -44,9 +47,16 @@ const ChatDialog = ({ dataDialog }) => {
           latestChat,
           type: "first-phase",
         })
-          .then((collect) => {
-            collect.onSnapshot((snap) => {
-              readChat({ snap, type: "second-phase" }).then((chats) => {
+          .then((doc) => {
+            const channelID = doc.channelID;
+            doc.collect.onSnapshot((snap) => {
+              readChat({
+                snap,
+                type: "second-phase",
+                sender,
+                recipient,
+                channelID,
+              }).then((chats) => {
                 if (mounted) {
                   setLoading(false);
                   setDialog(chats);
@@ -66,8 +76,8 @@ const ChatDialog = ({ dataDialog }) => {
           });
       };
 
-      handleReadChat();
-      if (triggerInit) handleReadChat();
+      mounted && handleReadChat();
+      if (mounted && triggerInit) handleReadChat();
 
       setSenderTypingStatus({ sender, recipient, status: typing });
       checkTypingStatus({ sender, recipient }).then((collect) => {
@@ -79,21 +89,24 @@ const ChatDialog = ({ dataDialog }) => {
           }
         });
       });
+    } else {
+      setLoading(false);
     }
 
-    return () => setMounted(false);
+    return () => {
+      setMounted(false);
+    };
   }, [
+    location,
     mounted,
     sender,
     recipient,
     checkTypingStatus,
-    handleReadChat,
     setTyper,
     setSenderTypingStatus,
     typing,
     readChat,
     triggerInit,
-    setLoading,
     latestChat,
     triggerEndLine,
     setTriggerEndLine,
@@ -127,7 +140,8 @@ const ChatDialog = ({ dataDialog }) => {
   const ShowWhoTyping = () => {
     return (
       typer &&
-      typer.email !== sender.email && (
+      typer.email !== sender.email &&
+      activeChannel.email === typer.email && (
         <div className="typer-status">
           {typer.username ? typer.username : SetNameFromEmail(typer.email)}
           <span> is typing . . .</span>
@@ -136,7 +150,7 @@ const ChatDialog = ({ dataDialog }) => {
     );
   };
 
-  const monitorChatRoom = () => {
+  const MonitorChatRoom = () => {
     if (loading) {
       return (
         <div className="loading-spinner">
@@ -218,7 +232,7 @@ const ChatDialog = ({ dataDialog }) => {
       className="dialog-window"
       style={{ height: `calc(${dialogHeight})` }}
     >
-      {monitorChatRoom()}
+      <MonitorChatRoom />
       <div ref={endline} id="endline"></div>
 
       <div

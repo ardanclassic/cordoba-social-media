@@ -3,37 +3,72 @@ import { Link } from "react-router-dom";
 import Cordoba from "assets/icons/cordoba-text.png";
 import { useUserContext } from "contexts/UserContext";
 import { useAuth } from "contexts/AuthContext";
-import MaleAvatar from "assets/images/male-avatar.svg";
-import FemaleAvatar from "assets/images/female-avatar.svg";
-import MainModal from "components/Modal/ConfirmModal";
+import ConfirmModal from "components/Modal/ConfirmModal";
 import CircleProfileImage from "components/CircleProfileImage";
 import "./style.scss";
 
 const Navbar = ({ show, setShow }) => {
   const { logout } = useAuth();
-  const { people } = useUserContext();
+  const { people, getChatNotif } = useUserContext();
   const { currentUser } = useAuth();
   const [userProfile, setUserProfile] = useState();
   const [openmodal, setOpenmodal] = useState(false);
+  const [chatNotif, setChatNotif] = useState(false);
 
   useEffect(() => {
     if (people && currentUser) {
+      getChatNotif().then((collect) => {
+        collect.onSnapshot((snap) => {
+          let channels = [];
+          snap.forEach((channel) => channels.push(channel.data()));
+          const check = channels.find((c) => c.unread > 0);
+          if (check) setChatNotif(true);
+          else setChatNotif(false);
+        });
+      });
       const checkUser = people.find((e) => e.email === currentUser.email);
       setUserProfile(checkUser);
     }
-  }, [people, currentUser]);
-
-  const setIconImage = (person) => {
-    return person.gender === "male" ? (
-      <img src={MaleAvatar} alt="icon-avatar" />
-    ) : (
-      <img src={FemaleAvatar} alt="icon-avatar" />
-    );
-  };
+  }, [people, currentUser, getChatNotif]);
 
   const handleLogout = (e) => {
     logout();
     setOpenmodal(false);
+  };
+
+  const IconChat = () => {
+    return (
+      <Link to="/chat" className="icons">
+        <div className="chat-logo">
+          {chatNotif && <div className="notif-dot"></div>}
+          <i className="fas fa-comments"></i>
+        </div>
+      </Link>
+    );
+  };
+
+  const IconProfile = () => {
+    if (userProfile) {
+      return (
+        <div className="icons">
+          <CircleProfileImage
+            data={{
+              email: userProfile.email,
+              size: 32,
+            }}
+          />
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const IconSignOut = () => {
+    return (
+      <div className="icons" onClick={() => setOpenmodal(true)}>
+        <i className="fas fa-sign-out-alt"></i>
+      </div>
+    );
   };
 
   const content = {
@@ -51,28 +86,13 @@ const Navbar = ({ show, setShow }) => {
           <img className="icon-brand" src={Cordoba} alt="logo-icon" />
         </Link>
         <div className="navbar-items">
-          <Link to="/chat" className="icons">
-            <div className="chat-logo">
-              <i className="fas fa-comments"></i>
-            </div>
-          </Link>
-          {userProfile && (
-            <div className="icons">
-              <CircleProfileImage
-                data={{
-                  email: userProfile.email,
-                  size: 32,
-                }}
-              />
-            </div>
-          )}
-          <div className="icons" onClick={() => setOpenmodal(true)}>
-            <i className="fas fa-sign-out-alt"></i>
-          </div>
+          <IconChat />
+          <IconProfile />
+          <IconSignOut />
         </div>
       </div>
 
-      <MainModal data={{ ...content }} />
+      <ConfirmModal data={{ ...content }} />
     </nav>
   );
 };
