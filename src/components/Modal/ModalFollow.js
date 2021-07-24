@@ -1,10 +1,13 @@
 import CircleProfileImage from "components/CircleProfileImage";
 import React, { useState, useEffect } from "react";
+import { useUserContext } from "contexts/UserContext";
 import { Modal } from "react-responsive-modal";
 import { useHistory } from "react-router-dom";
+import { SetNameFromEmail } from "utils/helpers";
 
 const ModalFollow = ({ data }) => {
   const history = useHistory();
+  const { people } = useUserContext();
   const [mounted, setmounted] = useState(false);
   const {
     openFollowers,
@@ -14,11 +17,24 @@ const ModalFollow = ({ data }) => {
     persons,
   } = data;
 
-
   useEffect(() => {
     setmounted(true);
     return () => setmounted(false);
   }, [data, mounted]);
+
+  const getUsername = (email) => {
+    if (people) {
+      const findUser = people.find((e) => e.email === email);
+      return (
+        <div className="username">
+          {findUser.userData.username
+            ? findUser.userData.username
+            : SetNameFromEmail(findUser.email)}
+        </div>
+      );
+    }
+    return null;
+  };
 
   const ListPersons = () => {
     if (persons) {
@@ -34,7 +50,7 @@ const ModalFollow = ({ data }) => {
                 }
               >
                 <CircleProfileImage data={{ email: person.email, size: 36 }} />
-                <div className="desc-area">{person.name}</div>
+                <div className="desc-area">{getUsername(person.email)}</div>
               </div>
             );
           })}
