@@ -1,0 +1,35 @@
+.chatbox {
+  width: 100%;
+  position: relative;
+  padding: 1em;
+  
+  .chat-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+  }
+}
+
+/** SETUP SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  cursor: pointer;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+}
+
+/* Works on Firefox */
+.dialog-window {
+  scrollbar-width: thin;
+  scrollbar-color: none #aaa;
+  border-radius: 20px;
+}

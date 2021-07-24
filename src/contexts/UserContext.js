@@ -216,7 +216,7 @@ export const UserProvider = ({ children }) => {
                 .doc(channel.channelID)
                 .collection("chatroom")
                 .orderBy("created_at", "desc")
-                .limit(1000);
+                .limit(data.latestChat);
 
               resolve(collect);
             })
@@ -300,13 +300,15 @@ export const UserProvider = ({ children }) => {
       checkChannelExisting(data).then((channel) => {
         if (channel) {
           if (data.status) {
-            fs.collection("conversations").doc(channel.channelID).update({
-              typing: {
-                email: data.sender.email,
-                userID: data.sender.userID,
-                username: data.sender.userData.username,
-              },
-            });
+            fs.collection("conversations")
+              .doc(channel.channelID)
+              .update({
+                typing: {
+                  email: data.sender.email,
+                  userID: data.sender.userID,
+                  username: data.sender.userData.username,
+                },
+              });
           } else {
             fs.collection("conversations").doc(channel.channelID).update({
               typing: null,

@@ -11,6 +11,15 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC5zXpQgv0lw7lAGUn3H7yrawZfxZLDDB4",
+//   authDomain: "auth-dev-14b25.firebaseapp.com",
+//   projectId: "auth-dev-14b25",
+//   storageBucket: "auth-dev-14b25.appspot.com",
+//   messagingSenderId: "230098785933",
+//   appId: "1:230098785933:web:c2810e6622c885f497f4c4",
+// };
+
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

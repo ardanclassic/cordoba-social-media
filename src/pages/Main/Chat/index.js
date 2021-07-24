@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUserContext } from "contexts/UserContext";
 import { useAuth } from "contexts/AuthContext";
-import ChatBox from "components/ChatBox";
-import ChannelBox from "components/ChannelBox";
+import ChatBox from "components/CHAT_GROUP/ChatBox";
+import ChannelBox from "components/CHAT_GROUP/ChannelBox";
 import "./style.scss";
 
 const Chatting = () => {
@@ -12,8 +12,9 @@ const Chatting = () => {
   const { people } = useUserContext();
   const [recipient, setRecipient] = useState(null);
   const [sender, setSender] = useState(null);
+  const [initFirstChat, setInitFirstChat] = useState(true);
   const [activeChannel, setActiveChannel] = useState();
-
+  
   useEffect(() => {
     const unsubscribe = () => {
       if (currentUser && people) {
@@ -37,6 +38,8 @@ const Chatting = () => {
     sender,
     recipient,
     activeChannel,
+    initFirstChat,
+    setInitFirstChat,
   };
 
   return (

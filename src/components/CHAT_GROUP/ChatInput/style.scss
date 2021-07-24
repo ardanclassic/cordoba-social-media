@@ -1,0 +1,28 @@
+form {
+  position: relative;
+  overflow: hidden;
+  margin: 14px auto 0;
+
+  .chatinput {
+    width: 90% !important;
+    resize: none;
+    max-height: 125px;
+    padding-top: 12px !important;
+  }
+  .send-chat {
+    width: 50px;
+    height: 50px;
+    border-radius: 50% !important;
+    padding: 2px !important;
+    color: white !important;
+    background-color: crimson;
+    margin-left: auto;
+    &:hover {
+      background-color: darkred;
+    }
+    &:active {
+      background-color: #000;
+      color: #fff;
+    }
+  }
+}

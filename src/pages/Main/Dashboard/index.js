@@ -20,14 +20,13 @@ const Dashboard = () => {
   useEffect(() => {
     // const milli = moment("19-07-2021, 09.07", "DD-MM-YYYY, HH:mm").valueOf();
     // console.log(milli);
-
     if (people && currentUser) {
       setLoading(false);
       getLoginUser().then((user) => {
         setUserProfile(user);
       });
     }
-  }, [people, currentUser]);
+  }, [people, currentUser, getLoginUser]);
 
   const ProfileBox = () => {
     if (userProfile) {
